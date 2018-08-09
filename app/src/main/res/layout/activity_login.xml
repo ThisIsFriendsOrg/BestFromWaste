@@ -18,7 +18,8 @@
             android:id="@+id/name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            />
 
         <TextView
             android:id="@+id/email_text_view"
@@ -40,7 +41,7 @@
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity=""
                 android:layout_marginLeft="10dp" />
 
@@ -48,14 +49,17 @@
             <LinearLayout
                 android:id="@+id/Phone"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginLeft="100dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="40dp"
                     android:layout_marginTop="10dp"
+                    android:src="@drawable/phone"
+                    android:paddingBottom="12dp"
+
                     />
 
                 <Button

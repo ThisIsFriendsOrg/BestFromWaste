@@ -138,11 +138,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public void phoneSignIn(View view)
     {
-       /* Intent intent=new Intent(getApplicationContext(),phoneNumberVerificaton.class);
-        startActivity(intent);*/
-        //Toast.makeText(this, "Phone Sign In method selected", Toast.LENGTH_SHORT).show();
-        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent=new Intent(getApplicationContext(),phoneNumberVerificaton.class);
         startActivity(intent);
+        Toast.makeText(this, "Phone Sign In method selected", Toast.LENGTH_SHORT).show();
+        //Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        //startActivity(intent);
     }
 
     public void gmail(View view)
