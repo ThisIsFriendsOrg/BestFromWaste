@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CameraActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/relativeLayout">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:id="@+id/imageView" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Edit"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="16sp"
+                android:textColor="#0000ff"
+                android:id="@+id/editPhotoId"
+                android:onClick="editPhoto"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/relativeLayout"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description :-"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:id="@+id/textView"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height= "match_parent"
+                android:layout_marginTop="8dp"
+                android:id="@+id/descriptionText"
+                android:textSize="16sp"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="top|left"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:text="send"
+            android:id="@+id/sendButtonId"
+            android:visibility="invisible"
+            android:onClick="sendButton"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
