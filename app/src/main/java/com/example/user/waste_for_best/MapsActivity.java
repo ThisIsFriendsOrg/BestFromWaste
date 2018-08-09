@@ -1,4 +1,4 @@
-package com.example.user.waste_for_best;
+/*package com.example.user.waste_for_best;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,7 +19,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+*/
+/*
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -78,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+/*
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -139,3 +141,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 }
+*/

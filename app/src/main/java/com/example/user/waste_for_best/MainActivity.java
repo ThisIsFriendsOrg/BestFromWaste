@@ -30,7 +30,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
-
+//hello
     ViewPager viewPager;
     LinearLayout sliderDotspanel;
     private int dotscount;

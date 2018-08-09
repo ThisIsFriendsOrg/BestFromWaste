@@ -43,8 +43,8 @@ public class CameraActivity extends AppCompatActivity {
 
         Log.i("Message",descriptionMessage.toString());
 
-        Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
-        startActivity(intent);
+      //  Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+      //  startActivity(intent);
 
 
     }
