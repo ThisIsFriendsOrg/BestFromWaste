@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src ="@drawable/applogo"
+            android:src ="@drawable/newapplogo"
             android:id="@+id/appLogoImage"/>
     </RelativeLayout>
 

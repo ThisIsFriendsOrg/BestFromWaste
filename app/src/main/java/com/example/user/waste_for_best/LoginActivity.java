@@ -37,18 +37,14 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private com.google.android.gms.common.SignInButton signInButton;
     private GoogleApiClient mGoogleApiClient;
-    //private Button signOutButton;
-    private TextView nameTextView;
-    private TextView emailTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         signInButton = (com.google.android.gms.common.SignInButton) findViewById(R.id.sign_in_button);
-        //signOutButton = (Button) findViewById(R.id.sign_out_button);
-        //nameTextView = (TextView) findViewById(R.id.name_text_view);
-       // emailTextView = (TextView) findViewById(R.id.email_text_view);
+
 
 
 
@@ -75,12 +71,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (user != null) {
                     signInButton.setVisibility(View.GONE);
-                    //signOutButton.setVisibility(View.VISIBLE);
+                  //  signOutButton.setVisibility(View.VISIBLE);
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     if (user.getDisplayName() != null)
-                        nameTextView.setText("HI " + user.getDisplayName().toString());
-                    emailTextView.setText(user.getEmail().toString());
+                        //nameTextView.setText("HI " + user.getDisplayName().toString());
+                   // emailTextView.setText(user.getEmail().toString());
                     try {
                         int v = getPackageManager().getPackageInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0 ).versionCode;
                         Log.i("Google Play", String.valueOf(v));
@@ -90,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     signInButton.setVisibility(View.VISIBLE);
-                    //signOutButton.setVisibility(View.GONE);
+//                    signOutButton.setVisibility(View.GONE);
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
@@ -102,14 +98,31 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signIn();
-               /* if(l==1)
+                if(signIn()==1)
                 {
                     Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
-                }*/
+                }
             }
         });
-
+        /*signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                signInButton.setVisibility(View.VISIBLE);
+                                signOutButton.setVisibility(View.GONE);
+                                emailTextView.setText(" ".toString());
+                                nameTextView.setText(" ".toString());
+                            }
+                        });
+            }
+            // ..
+        });
+        */
 
 
     }

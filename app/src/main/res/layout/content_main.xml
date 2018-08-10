@@ -21,7 +21,7 @@
             android:layout_marginTop="6dp"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:src="@drawable/applogo"/>
+            android:src="@drawable/newapplogo"/>
 
         <android.support.v4.view.ViewPager
 
