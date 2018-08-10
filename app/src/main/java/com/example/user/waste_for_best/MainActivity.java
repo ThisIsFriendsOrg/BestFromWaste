@@ -30,7 +30,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
 
-    
+
     ViewPager viewPager;
     LinearLayout sliderDotspanel;
     private int dotscount;
@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity
         };
 
         timer = new Timer(); // This will create a new Thread
-        timer .schedule(new TimerTask() { // task to be scheduled
+        timer .schedule(
+                new TimerTask() { // task to be scheduled
 
             @Override
             public void run() {

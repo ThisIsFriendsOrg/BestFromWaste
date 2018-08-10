@@ -23,10 +23,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class CameraActivity extends AppCompatActivity {
+
+    int m;
+
+
+    private Uri mImageUri;
+
+    private static final int PICK_IMAGE_REQUEST = 2;
+
 
     ImageView imageView ;
     EditText descriptionText;
@@ -73,6 +83,8 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
@@ -134,7 +146,18 @@ public class CameraActivity extends AppCompatActivity {
             imageView.setImageBitmap(imageBitmap);
 
         }
+
+
     }
 
+
+
 }
+
+
+
+
+
+
+
 
