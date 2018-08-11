@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CameraActivity">
+    tools:context=".galleryActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,8 +35,7 @@
                 android:layout_marginRight="8dp"
                 android:textSize="16sp"
                 android:textColor="#0000ff"
-                android:id="@+id/editPhotoId"
-                android:onClick="editPhoto"/>
+                android:id="@+id/editPhotoId" />
 
         </RelativeLayout>
 
@@ -74,7 +73,7 @@
             android:text="send"
             android:id="@+id/sendButtonId"
             android:visibility="invisible"
-            android:onClick="sendButton"/>
+            />
 
     </RelativeLayout>
 

@@ -2,6 +2,8 @@ package com.example.user.waste_for_best;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +19,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class FoodWasteActivity extends AppCompatActivity {
 
-   // private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int PICK_IMAGE_REQUEST = 2;
     private Uri mImageUri;
 
 
@@ -30,15 +33,15 @@ public class FoodWasteActivity extends AppCompatActivity {
     CustomAdapter adapter;
     ArrayList content = new ArrayList();
     ImageView numberOfClickItems;
-    ImageView gallery123;
-    ImageView imageView;
+    ImageView imageGallery;
+   // ImageView imageView;
 
     public void numberOfCheckedItems(View view) {
-
 
         numberOfClickItems = findViewById(R.id.numberOfClickItems);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.animation);
         numberOfClickItems.startAnimation(animation);
+
 
         if (content.size() > 0) {
 
@@ -57,15 +60,16 @@ public class FoodWasteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_waste);
+
+
 
         listView = findViewById(R.id.listView);
 
         itemArray = new ArrayList();
+
+        imageGallery=(ImageView)findViewById(R.id.galleryButton);
 
         itemArray.add(new DataModel("Dry", false));
         itemArray.add(new DataModel("Wet", false));
@@ -92,6 +96,25 @@ public class FoodWasteActivity extends AppCompatActivity {
             }
         });
 
+        imageGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (content.size() > 0) {
+
+                    Log.i("Item List", content.toString());
+                    openFileChooser();
+
+                }
+                else {
+                    Toast toast = Toast.makeText(getApplicationContext(), " Please Select the item to continue.. ", Toast.LENGTH_LONG);
+                    View view1 = toast.getView();
+                    view1.setBackgroundColor(Color.BLUE);
+                    toast.show();
+                }
+
+            }
+        });
+
 
 
 
@@ -99,5 +122,41 @@ public class FoodWasteActivity extends AppCompatActivity {
     }
 
 
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Log.i("Image uri", mImageUri.toString());
+           /* //loading image with help of picasso
+            Picasso
+                    .with(this)
+                    .load(mImageUri)
+                    .fit()
+                    .centerInside()
+                    .into(CameraActivity.imageView);*/
+
+            /*Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream stream=new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+            byte[] byteArray=stream.toByteArray();*/
+
+            //Bitmap bmp= BitmapFactory.decodeResource(getResources(),data.describeContents());
+
+
+            Intent intent=new Intent(FoodWasteActivity.this,galleryActivity.class);
+            intent.putExtra("imageuri",mImageUri.toString());
+            startActivity(intent);
+
+
+        }
+    }
 }

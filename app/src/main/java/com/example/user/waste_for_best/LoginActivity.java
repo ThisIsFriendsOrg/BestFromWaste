@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (user != null) {
                     signInButton.setVisibility(View.GONE);
+
                   //  signOutButton.setVisibility(View.VISIBLE);
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
