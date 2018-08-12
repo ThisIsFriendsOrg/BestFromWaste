@@ -133,24 +133,9 @@ public class FoodWasteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
             mImageUri = data.getData();
             Log.i("Image uri", mImageUri.toString());
-           /* //loading image with help of picasso
-            Picasso
-                    .with(this)
-                    .load(mImageUri)
-                    .fit()
-                    .centerInside()
-                    .into(CameraActivity.imageView);*/
-
-            /*Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream stream=new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
-            byte[] byteArray=stream.toByteArray();*/
-
-            //Bitmap bmp= BitmapFactory.decodeResource(getResources(),data.describeContents());
-
 
             Intent intent=new Intent(FoodWasteActivity.this,galleryActivity.class);
             intent.putExtra("imageuri",mImageUri.toString());

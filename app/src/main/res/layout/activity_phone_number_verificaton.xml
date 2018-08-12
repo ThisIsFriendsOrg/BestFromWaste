@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/drop"
     android:padding="10dp"
+    android:id="@+id/relativeLayout"
+    android:onClick="relativeLayout"
     tools:context=".phoneNumberVerificaton">
 
     <TextView
@@ -26,7 +28,8 @@
         android:layout_below="@id/textView"
         android:layout_marginTop="20dp"
         android:background="@android:color/background_light"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
         <Spinner
             android:id="@+id/spinner"
@@ -44,22 +47,31 @@
             android:hint="Enter Phone Number"
             android:inputType="number" />
 
-
     </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        android:layout_below="@id/linearLayout"
+        android:layout_marginTop="16dp"
+        android:background="#FFFFFF"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:id="@+id/nameText"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/continueSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/nameText"
         android:background="#0077be"
         android:onClick="continueSignUp"
         android:text="Continue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="390dp" />
+        android:visibility="invisible"/>
 
 
 

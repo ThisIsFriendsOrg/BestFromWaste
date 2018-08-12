@@ -32,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    FirebaseAuth mAuth;
 
     int currentPage = 0;
     Timer timer;
@@ -216,6 +219,11 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
+
+             FirebaseAuth.getInstance().signOut();
+             Intent intent = new Intent(this,LoginActivity.class);
+             startActivity(intent);
+
             return true;
         }
 
