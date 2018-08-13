@@ -21,7 +21,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".FoodWasteActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -44,8 +44,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".phoneNumberVerificaton" />
-        <activity android:name=".verifyPhoneActivity"></activity>
-        <activity android:name=".galleryActivity"></activity>
+        <activity android:name=".verifyPhoneActivity" />
+        <activity android:name=".galleryActivity" />
+        <activity android:name=".buyAndSell"></activity>
     </application>
 
 </manifest>

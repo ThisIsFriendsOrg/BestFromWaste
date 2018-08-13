@@ -4,6 +4,7 @@ public class upload {
 
     private String mdescriptionText;
     private String mImageUrl;
+    //private String userName;
 
     public upload()
     {
@@ -17,6 +18,7 @@ public class upload {
         }
         mdescriptionText=description;
         mImageUrl=imageUrl;
+        //userName=name;
     }
 
     public String getName()
@@ -37,4 +39,8 @@ public class upload {
     {
         mImageUrl=imageUrl;
     }
+
+    //public void  UserData(){return userName};
+
+    //public void setUser
 }

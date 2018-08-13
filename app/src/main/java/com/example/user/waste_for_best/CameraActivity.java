@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,6 +33,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -55,6 +58,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private StorageReference mStorageRef;
     private DatabaseReference mdatabaseRef;
+    private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private EditText descriptionText;
 
@@ -67,7 +71,7 @@ public class CameraActivity extends AppCompatActivity {
 
     String mCurrentPhotoPath;
 
-   /* private File createImageFile() throws IOException {
+   private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -81,7 +85,7 @@ public class CameraActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }*/
+    }
 
 
 
@@ -101,26 +105,29 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
-    public void takePhoto(){
+    public void takePhoto() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-       /* if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                ex.printStackTrace();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
+                        "com.example.user.waste_for_best",
                         photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);*/
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                 startActivityForResult(takePictureIntent, 1);
             }
+        }
+    }
 
 
 
@@ -147,8 +154,10 @@ public class CameraActivity extends AppCompatActivity {
       progressBar=findViewById(R.id.progressBar);
         descriptionText=findViewById(R.id.descriptionText);
 
+        FirebaseUser user=mAuth.getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("images");
         mdatabaseRef = FirebaseDatabase.getInstance().getReference("images");
+        mAuth=FirebaseAuth.getInstance();
 
            imageView = findViewById(R.id.imageView);
             descriptionText = findViewById(R.id.descriptionText);
@@ -207,19 +216,33 @@ public class CameraActivity extends AppCompatActivity {
 
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
 
+            Uri mCameraUri = data.getData();
+            try {
 
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),mCameraUri);
 
-            imageView.setImageBitmap(imageBitmap);
+                imageView.setImageBitmap(imageBitmap);
+            } catch (IOException e) {
 
-           /* ByteArrayOutputStream bytes=new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,bytes);
-            String path = MediaStore.Images.Media.insertImage(this.getContentResolver(),imageBitmap,"Title",null);
-            Uri mCameraUri = Uri.parse(path);
+                e.printStackTrace();
 
-            Log.i("_Uri",mCameraUri.toString());
-            */
+            }
+
+
+            //   Bundle extras = data.getExtras();
+         //   Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+          //  Log.i("_Bitmap",imageBitmap.toString());
+
+           // imageView.setImageBitmap(imageBitmap);
+
+           // ByteArrayOutputStream bytes=new ByteArrayOutputStream();
+            //imageBitmap.compress(Bitmap.CompressFormat.PNG,100,bytes);
+           // String path = MediaStore.Images.Media.insertImage(this.getContentResolver(),imageBitmap,"Title",null);
+          //  Uri mCameraUri = Uri.parse(path);
+
+           //Log.i("_Uri",path);
+
 
 
 
@@ -251,6 +274,7 @@ private void uploadFile()
                     }
                 }, 500);
                 Toast.makeText(CameraActivity.this, "Upload Succesful", Toast.LENGTH_LONG).show();
+
                 upload uploadName = new upload(descriptionText.getText().toString().trim(),
                         taskSnapshot.getDownloadUrl().toString());
                 String uploadId = mdatabaseRef.push().getKey();
