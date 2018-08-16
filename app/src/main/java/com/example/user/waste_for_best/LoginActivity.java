@@ -46,8 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         signInButton = (com.google.android.gms.common.SignInButton) findViewById(R.id.sign_in_button);
 
 
-
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -70,24 +68,33 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                   // signInButton.setVisibility(View.GONE);
-
-
+                    signInButton.setVisibility(View.GONE);
+                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    //signOutButton.setVisibility(View.VISIBLE);
+                    //gmail.setVisibility(View.INVISIBLE);
+                    //phone.setVisibility(View.INVISIBLE);
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    if (user.getDisplayName() != null)
+                    // if (user.getDisplayName() != null)
+                    //  nameTextView.setText("Welcome !");
+                    // emailTextView.setText(user.getEmail().toString());
+
                     try {
-                        int v = getPackageManager().getPackageInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0 ).versionCode;
+                        int v = getPackageManager().getPackageInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0).versionCode;
                         Log.i("Google Play", String.valueOf(v));
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
 
+
                 } else {
-                    //signInButton.setVisibility(View.VISIBLE);
-//                    signOutButton.setVisibility(View.GONE);
+                    signInButton.setVisibility(View.VISIBLE);
+
+                    //signOutButton.setVisibility(View.GONE);
+                    // gmail.setVisibility(View.VISIBLE);
+                    //phone.setVisibility(View.VISIBLE);
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    //Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -96,11 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signIn();
-                if(signIn()==1)
-                {
-                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                    startActivity(intent);
-                }
+
             }
         });
         /*signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -128,28 +131,24 @@ public class LoginActivity extends AppCompatActivity {
     private int signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        if(mGoogleApiClient.hasConnectedApi(Auth.GOOGLE_SIGN_IN_API))
+        {
+            mGoogleApiClient.clearDefaultAccountAndReconnect();
+        }
+
         return 1;
     }
 
-    public void phoneSignIn(View view)
-    {
-        Intent intent=new Intent(getApplicationContext(),phoneNumberVerificaton.class);
+    public void phoneSignIn(View view) {
+        Intent intent = new Intent(getApplicationContext(), phoneNumberVerificaton.class);
         startActivity(intent);
         Toast.makeText(this, "Phone Sign In method selected", Toast.LENGTH_SHORT).show();
         //Intent intent=new Intent(getApplicationContext(),MainActivity.class);
         //startActivity(intent);
     }
 
-    public void gmail(View view)
-    {
-        Toast.makeText(this, "Gmail Sign In method selected", Toast.LENGTH_SHORT).show();
-    }
 
-
-
-
-
-//
+    //
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -162,8 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
 
-                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
+
 
 
             } else {
@@ -202,16 +200,12 @@ public class LoginActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            //  Toast.makeText(MainActivity.this, "Authentication failed.",
-                            //        Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
+
 }
 
