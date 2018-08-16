@@ -5,9 +5,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -21,6 +22,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -33,8 +36,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,6 +47,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,89 +60,45 @@ public class CameraActivity extends AppCompatActivity {
 
     private StorageReference mStorageRef;
     private DatabaseReference mdatabaseRef;
-    private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private EditText descriptionText;
 
 
-    ImageView imageView ;
+    ImageView imageView;
     Button sendButtonId;
     ArrayList descriptionMessage = new ArrayList();
-    TextView editPhotoId;
+
+    File file;
 
 
-    String mCurrentPhotoPath;
+    public void sendButton(View view) {
 
-   private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
+        Log.i("Message", descriptionMessage.toString());
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-
-
-    public void editPhoto(View view){
-
-        takePhoto();
-    }
-
-    public void sendButton(View view){
-
-        Log.i("Message",descriptionMessage.toString());
         uploadFile();
 
-      //  Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
-      //  startActivity(intent);
+        //  Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+        //  startActivity(intent);
 
 
     }
-
-    public void takePhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                ex.printStackTrace();
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.user.waste_for_best",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-                startActivityForResult(takePictureIntent, 1);
-            }
-        }
-    }
-
-
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode ==1){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 takePhoto();
+            }
+
+        }
+        if (requestCode == 2) {
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
             }
         }
     }
@@ -151,104 +109,107 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
 
 
-      progressBar=findViewById(R.id.progressBar);
-        descriptionText=findViewById(R.id.descriptionText);
+        progressBar = findViewById(R.id.progressBar);
+        descriptionText = findViewById(R.id.descriptionText);
 
-        FirebaseUser user=mAuth.getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference("images");
         mdatabaseRef = FirebaseDatabase.getInstance().getReference("images");
-        mAuth=FirebaseAuth.getInstance();
 
-           imageView = findViewById(R.id.imageView);
-            descriptionText = findViewById(R.id.descriptionText);
-            sendButtonId = findViewById(R.id.sendButtonId);
-            editPhotoId = findViewById(R.id.editPhotoId);
+        imageView = findViewById(R.id.imageView);
+        descriptionText = findViewById(R.id.descriptionText);
+        sendButtonId = findViewById(R.id.sendButtonId);
 
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) {
 
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-            } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
 
-                takePhoto();
-            }
+        } else {
 
-            descriptionText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    descriptionMessage.clear();
-
-                    if (charSequence.length() > 0) {
-
-                        sendButtonId.setVisibility(View.VISIBLE);
-
-                        descriptionMessage.add(String.valueOf(charSequence));
-
-                    } else {
-
-                        sendButtonId.setVisibility(View.INVISIBLE);
-                    }
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            });
-
-
-
+            takePhoto();
         }
 
+        descriptionText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                descriptionMessage.clear();
+
+                if (charSequence.length() > 0) {
+
+                    sendButtonId.setVisibility(View.VISIBLE);
+
+                    descriptionMessage.add(String.valueOf(charSequence));
+
+                } else {
+
+                    sendButtonId.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+    }
+
+    public void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        startActivityForResult(intent, 1);
+    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 1 && resultCode == RESULT_OK && data != null){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
-            Uri mCameraUri = data.getData();
-            try {
-
-                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),mCameraUri);
-
-                imageView.setImageBitmap(imageBitmap);
-            } catch (IOException e) {
-
-                e.printStackTrace();
-
-            }
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(photo);
 
 
-            //   Bundle extras = data.getExtras();
-         //   Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+            mCameraUri = getImageUri(getApplicationContext(), photo);
 
-          //  Log.i("_Bitmap",imageBitmap.toString());
+            // CALL THIS METHOD TO GET THE ACTUAL PATH
+            File finalFile = new File(getRealPathFromURI(mCameraUri));
 
-           // imageView.setImageBitmap(imageBitmap);
-
-           // ByteArrayOutputStream bytes=new ByteArrayOutputStream();
-            //imageBitmap.compress(Bitmap.CompressFormat.PNG,100,bytes);
-           // String path = MediaStore.Images.Media.insertImage(this.getContentResolver(),imageBitmap,"Title",null);
-          //  Uri mCameraUri = Uri.parse(path);
-
-           //Log.i("_Uri",path);
-
-
-
+            Log.i("_URi", mCameraUri.toString());
+            Log.i("_uriFile", finalFile.getAbsolutePath());
 
         }
 
     }
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
@@ -256,58 +217,70 @@ public class CameraActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-private void uploadFile()
-{
-    if(mCameraUri != null)
-    {
-        StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mCameraUri));
+    private void uploadFile() {
+        if (mCameraUri != null) {
+            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mCameraUri));
 
-        fileReference.putFile(mCameraUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setProgress(0);
+            fileReference.putFile(mCameraUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(0);
 
-                    }
-                }, 500);
-                Toast.makeText(CameraActivity.this, "Upload Succesful", Toast.LENGTH_LONG).show();
-
-                upload uploadName = new upload(descriptionText.getText().toString().trim(),
-                        taskSnapshot.getDownloadUrl().toString());
-                String uploadId = mdatabaseRef.push().getKey();
-                mdatabaseRef.child(uploadId).setValue(uploadName);
+                        }
+                    }, 500);
+                    Toast.makeText(CameraActivity.this, "Upload Succesful", Toast.LENGTH_LONG).show();
+                    upload uploadName = new upload(descriptionText.getText().toString().trim(),
+                            taskSnapshot.getDownloadUrl().toString());
+                    String uploadId = mdatabaseRef.push().getKey();
+                    mdatabaseRef.child(uploadId).setValue(uploadName);
 
 
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(CameraActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CameraActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressBar.setProgress((int) progress);
 
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        progressBar.setProgress((int) progress);
-
-                    }
-                });
-    }
-    else
-    {
-        Toast.makeText(this, "No photo Choosen", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "No photo Choosen", Toast.LENGTH_SHORT).show();
+        }
     }
 
-}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        getMenuInflater().inflate(R.menu.edit, menu);
 
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.editCameraPhoto) {
+
+            takePhoto();
+            return true;
+        }
+        return false;
+    }
 }
 
 

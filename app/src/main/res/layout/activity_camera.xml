@@ -22,17 +22,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
                 android:id="@+id/imageView" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Edit"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:textSize="16sp"
-                android:textColor="#0000ff"
-                android:id="@+id/editPhotoId"
-                android:onClick="editPhoto"/>
 
         </RelativeLayout>
 

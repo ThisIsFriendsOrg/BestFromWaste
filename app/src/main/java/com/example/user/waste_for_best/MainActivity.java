@@ -33,9 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,9 +45,7 @@ public class MainActivity extends AppCompatActivity
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
-    private FirebaseAuth.AuthStateListener mAuthStateListner;
-    private FirebaseAuth mAuth;
-
+    FirebaseAuth mAuth;
 
     int currentPage = 0;
     Timer timer;
@@ -104,18 +99,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
-        mAuth=FirebaseAuth.getInstance();
-
-        mAuthStateListner=new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()==null){
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                }
-
-            }
-        };
 
         sliderDotspanel = findViewById(R.id.sliderDots);
         viewPager = findViewById(R.id.viewPager);
@@ -294,14 +277,4 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthStateListner);
-    }
-
-
 }
-

@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -65,7 +67,7 @@ public class galleryActivity extends AppCompatActivity {
         mdatabaseRef= FirebaseDatabase.getInstance().getReference(userName);
         descriptionText = findViewById(R.id.descriptionText);
         sendButtonId = findViewById(R.id.sendButtonId);
-        editPhotoId = findViewById(R.id.editPhotoId);
+        //editPhotoId = findViewById(R.id.editPhotoId);
         progressBar=findViewById(R.id.progressBar);
 
 
@@ -77,13 +79,13 @@ public class galleryActivity extends AppCompatActivity {
         setPhoto();
 
 
-        editPhotoId.setOnClickListener(new View.OnClickListener() {
+       /* editPhotoId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();
                 setPhoto();
             }
-        });
+        });*/
     }
 
 
@@ -191,7 +193,7 @@ public class galleryActivity extends AppCompatActivity {
                     .centerInside()
                     .into(imageView);
 
-            Log.i("Image Uri",mImageUri.toString());
+            Log.i("_Image Uri",mImageUri.toString());
 
 
             descriptionText.addTextChangedListener(new TextWatcher() {
@@ -225,6 +227,28 @@ public class galleryActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.edit, menu);
+
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.editCameraPhoto) {
+
+           // takePhoto();
+            openFileChooser();
+            return true;
+        }
+        return false;
     }
 
 

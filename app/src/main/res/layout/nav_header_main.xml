@@ -24,7 +24,7 @@
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
-        android:paddingTop="12dp">
+        android:paddingTop="0dp">
 
     <ImageView
         android:id="@+id/userImageView"
