@@ -46,6 +46,8 @@
         <activity android:name=".phoneNumberVerificaton" />
         <activity android:name=".verifyPhoneActivity" />
         <activity android:name=".galleryActivity" />
+        <activity android:name=".gridCameraActivity" />
+        <activity android:name=".SetPriceActivity"></activity>
     </application>
 
 </manifest>

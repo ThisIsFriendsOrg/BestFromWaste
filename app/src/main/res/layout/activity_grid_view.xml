@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GridViewActivity">
-    
+
+
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,12 +16,14 @@
         android:columnWidth="10dp"
         android:numColumns="2"
         android:minHeight="0dp"
+        android:layout_above="@+id/bottomNavigationView"
         android:minWidth="0dp"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:layout_above="@+id/bottomNavigationView"/>
+        android:gravity="center" />
+
+
 
     <android.support.design.widget.BottomNavigationView
         android:layout_width="match_parent"
@@ -42,7 +46,9 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/home"
                 android:layout_marginLeft="10dp"
-               android:onClick="homeButton" />
+               android:onClick="homeButton"
+                android:minWidth="0dp"
+                android:minHeight="0dp"/>
 
             <ImageView
                 android:layout_width="60dp"
@@ -53,9 +59,12 @@
                 android:layout_marginRight="10dp"
                 android:src="@drawable/camera1"
                android:id="@+id/cameraButtonId"
-                android:onClick="cameraButton"/>
+                android:onClick="cameraButton"
+                android:minHeight="0dp"
+                android:minWidth="0dp"/>
 
         </RelativeLayout>
+
     </android.support.design.widget.BottomNavigationView>
 
 

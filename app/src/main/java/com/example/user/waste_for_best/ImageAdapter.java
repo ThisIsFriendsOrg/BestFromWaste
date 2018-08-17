@@ -1,31 +1,33 @@
 package com.example.user.waste_for_best;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageAdapter extends BaseAdapter {
 
     private Context mContext;
+    public List<upload> mUpload;
 
-    private int[] images = {R.drawable.ic_launcher_background,R.drawable.camera,R.drawable.cat2,
-                            R.drawable.tomcat,R.drawable.egg,R.drawable.jerrymouse};
 
-    private String [] names = {"sonu","Raj", "Rakesh", "Raushan", "Swarnim","Samraat"};
-
-    public ImageAdapter(Context mContext){
+    public ImageAdapter(Context mContext,List<upload> uploads){
 
        this.mContext = mContext;
+       this.mUpload = uploads;
+
     }
     @Override
     public int getCount() {
-        return images.length;
+        return mUpload.size();
     }
 
     @Override
@@ -59,9 +61,16 @@ public class ImageAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.grid_image.setImageResource(images[position]);
+        upload uploadCurrent = mUpload.get(position);
 
-        holder.grid_text.setText(names[position]);
+        holder.grid_text.setText(uploadCurrent.getName());
+
+        Picasso.with(mContext)
+                .load(uploadCurrent.getImageUrl())
+                .placeholder(R.drawable.place_holder)
+                .fit()
+                .centerCrop()
+                .into(holder.grid_image);
 
         return convertView;
     }
