@@ -113,6 +113,7 @@ public class gridCameraActivity extends AppCompatActivity {
         Intent intent = new Intent(this,SetPriceActivity.class);
         intent.putExtra("CameraUri",path);
         startActivity(intent);
+        finish();
 
 
     }

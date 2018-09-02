@@ -35,7 +35,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".GridViewActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +46,12 @@
         <activity android:name=".verifyPhoneActivity" />
         <activity android:name=".galleryActivity" />
         <activity android:name=".gridCameraActivity" />
-        <activity android:name=".SetPriceActivity"></activity>
+        <activity android:name=".SetPriceActivity" />
+        <activity
+            android:name=".SellBuyActivity"
+            android:label="@string/title_activity_sell_buy" />
+        <activity android:name=".ProfilePicActivity" />
+        <activity android:name=".EditProfImgActivity"></activity>
     </application>
 
 </manifest>

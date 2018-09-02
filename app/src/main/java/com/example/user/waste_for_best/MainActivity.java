@@ -30,6 +30,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,58 +47,24 @@ public class MainActivity extends AppCompatActivity
     private int dotscount;
     private ImageView[] dots;
     FirebaseAuth mAuth;
+    static TextView userName;
 
     int currentPage = 0;
     Timer timer;
     final long DELAY_MS = 500;//delay in milliseconds before task is to be executed
     final long PERIOD_MS = 3000;
 
-    public void getPhoto(){
 
 
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult( intent,7);
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode ==1 ){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-                //if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-
-                    getPhoto();
-                //}
-            }
-        }
-    }
-
-    public void userImageLogo(View view){
-
-        if (Build.VERSION.SDK_INT < 23){
-
-            getPhoto();
-
-        }else {
-
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            } else {
-
-                getPhoto();
-            }
-        }
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        userName = findViewById(R.id.userNameTextView);
 
 
         sliderDotspanel = findViewById(R.id.sliderDots);
@@ -224,6 +191,7 @@ public class MainActivity extends AppCompatActivity
              Intent intent = new Intent(this,LoginActivity.class);
              startActivity(intent);
 
+
             return true;
         }
 
@@ -255,26 +223,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 7 && resultCode == RESULT_OK && data != null) {
+    public void userImageLogo(View view){
 
-            Uri selectedImage = data.getData();
-
-            try {
-
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-
-                ImageView userImage = findViewById(R.id.userImageView);
-
-                userImage.setImageBitmap(bitmap);
+        Intent intent = new Intent(getApplicationContext(),ProfilePicActivity.class);
+        startActivity(intent);
+        finish();
 
 
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
     }
 }

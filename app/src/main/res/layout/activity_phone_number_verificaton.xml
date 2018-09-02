@@ -58,6 +58,7 @@
         android:textSize="20sp"
         android:padding="10dp"
         android:id="@+id/nameText"
+        android:inputType="text"
         android:visibility="invisible"/>
 
     <Button

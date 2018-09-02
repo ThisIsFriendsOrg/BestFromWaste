@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:id="@+id/appLogoImage"
-            android:src="@drawable/hello"/>
+            android:src="@drawable/newapplogo"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -43,9 +43,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="50dp"
-                android:src="@drawable/phone"/>
+                android:layout_width="49dp"
+                android:layout_height="48dp"
+                android:background="#FFFFFF"
+                app:srcCompat="@drawable/ic_phone_android_black_24dp"/>
 
 
             <Button

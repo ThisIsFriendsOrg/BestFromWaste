@@ -24,7 +24,7 @@ public class phoneNumberVerificaton extends AppCompatActivity {
     private Spinner spinner;
     private EditText editText;
     private EditText nameText;
-    private ArrayList userName = new ArrayList<>();
+    static ArrayList userName = new ArrayList<>();
     private Button continueSignUp;
     private String number;
 

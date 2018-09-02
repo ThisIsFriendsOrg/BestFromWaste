@@ -63,7 +63,7 @@ public class ImageAdapter extends BaseAdapter {
 
         upload uploadCurrent = mUpload.get(position);
 
-        holder.grid_text.setText(uploadCurrent.getName());
+        holder.grid_text.setText("\u20B9 " + uploadCurrent.getName());
 
         Picasso.with(mContext)
                 .load(uploadCurrent.getImageUrl())

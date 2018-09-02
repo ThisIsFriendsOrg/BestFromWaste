@@ -27,9 +27,10 @@ import java.util.ArrayList;
 
 public class SetPriceActivity extends AppCompatActivity {
 
-     EditText priceText;
-   private Button setPriceButton;
-   static ArrayList<Integer> price = new ArrayList();
+    EditText priceText;
+    private Button setPriceButton;
+
+    private String price;
     private StorageReference mStorageRef;
     private DatabaseReference mdatabaseRef;
     private Uri mCameraUri;
@@ -40,14 +41,14 @@ public class SetPriceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_price);
 
-        mStorageRef= FirebaseStorage.getInstance().getReference("buySell_Image");
-        mdatabaseRef= FirebaseDatabase.getInstance().getReference("buySell_Image");
+        mStorageRef = FirebaseStorage.getInstance().getReference("buySell_Image");
+        mdatabaseRef = FirebaseDatabase.getInstance().getReference("buySell_Image");
 
         priceText = findViewById(R.id.priceText);
         setPriceButton = findViewById(R.id.setPriceButton);
 
         Intent intent = getIntent();
-        String path =intent.getStringExtra("CameraUri");
+        String path = intent.getStringExtra("CameraUri");
         mCameraUri = Uri.parse(path);
 
         //  priceText.setText("\u20B9");
@@ -61,15 +62,13 @@ public class SetPriceActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                price.clear();
 
-                if (s.length() > 1){
+                if (s.length() > 1) {
 
                     setPriceButton.setVisibility(View.VISIBLE);
 
-                    price.add(Integer.parseInt(s.toString()));
 
-                }else {
+                } else {
 
                     setPriceButton.setVisibility(View.INVISIBLE);
                 }
@@ -83,18 +82,20 @@ public class SetPriceActivity extends AppCompatActivity {
         });
     }
 
-     public void setPrice(View view){
+    public void setPrice(View view) {
 
-        Log.i("_price",price.toString());
+       // Log.i("_price", price.toString());
+
+        price = priceText.getText().toString().trim();
 
         uploadFile();
 
-        Intent intent = new Intent(this,GridViewActivity.class);
+        Intent intent = new Intent(this, SellBuyActivity.class);
         startActivity(intent);
+        finish();
 
 
     }
-
 
 
     private String getFileExtension(Uri uri) {
@@ -104,27 +105,24 @@ public class SetPriceActivity extends AppCompatActivity {
     }
 
 
-    private void uploadFile()
-    {
-        if(mCameraUri != null)
-        {
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mCameraUri));
+    private void uploadFile() {
+        if (mCameraUri != null) {
 
+            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis() + "." + getFileExtension(mCameraUri));
 
             fileReference.putFile(mCameraUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                           // Toast.makeText(SetPriceActivity.this, "Upload Succesful", Toast.LENGTH_LONG).show();
-                            upload uploadName = new upload(price.toString(),
+                            // Toast.makeText(SetPriceActivity.this, "Upload Succesful", Toast.LENGTH_LONG).show();
+                            upload uploadName = new upload(price ,
                                     taskSnapshot.getDownloadUrl().toString());
                             String uploadId = mdatabaseRef.push().getKey();
                             mdatabaseRef.child(uploadId).setValue(uploadName);
-                            Log.i("upload id",uploadId);
-                            Log.i("upload Name",uploadName.toString());
-                            Log.i("Price",SetPriceActivity.price.toString());
-
+                            Log.i("upload id", uploadId);
+                            Log.i("upload Name", uploadName.toString());
+                            Log.i("Price", price);
 
 
                         }
@@ -136,9 +134,7 @@ public class SetPriceActivity extends AppCompatActivity {
 
                         }
                     });
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "No photo Choosen", Toast.LENGTH_SHORT).show();
         }
 

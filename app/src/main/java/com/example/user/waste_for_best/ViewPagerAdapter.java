@@ -60,7 +60,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
                 }else if (position ==2){
 
-                    Intent intent = new Intent(view.getContext(),GridViewActivity.class);
+                    Intent intent = new Intent(view.getContext(),SellBuyActivity.class);
                     view.getContext().startActivity(intent);
 
                     Toast.makeText(context,"Sell Buy",Toast.LENGTH_SHORT).show();
